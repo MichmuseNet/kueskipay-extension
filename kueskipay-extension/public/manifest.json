@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "KueskiPay Assistant",
+  "version": "1.0.0",
+  "description": "Extensión para verificar tiendas compatibles con Kueski Pay, simular pagos por quincena y mostrar promociones.",
+  "permissions": ["activeTab", "scripting", "storage", "notifications", "tabs"],
+  "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "KueskiPay Assistant"
+  },
+  "background": {
+    "service_worker": "src/background/background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content/content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
