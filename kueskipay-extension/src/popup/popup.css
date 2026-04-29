@@ -1,9 +1,5 @@
 
-{/*visualizacion de la extención, únicamente es diseño
-  box-sizing: border-box hace que los tamaños sean más fáciles de controlar, 
-  porque el padding y el borde se incluyen dentro del tamaño total del elemento.
-El body quita márgenes y define la fuente general de la extensión.
-*/}
+
 * {
   box-sizing: border-box;
 }
