@@ -25,23 +25,26 @@ function Popup() { //estados del componente, guardan url, guarda tienda detectad
   useEffect(() => {
     async function getCurrentTab() {
       try {
-        const [tab] = await chrome.tabs.query({
-          active: true,
-          currentWindow: true,
-        });
+        // Verificamos que chrome.tabs exista (para el entorno de extensión)
+        if (typeof chrome !== "undefined" && chrome.tabs) {
+          const [tab] = await chrome.tabs.query({
+            active: true,
+            currentWindow: true,
+          });
 //guarda url en el estado currenturl
-        const url = tab?.url || "";
-        setCurrentUrl(url);
+          const url = tab?.url || "";
+          setCurrentUrl(url);
 //manda la url a detectalliedstore, comparando el dominio con las tiendas en stores.js
 //si encuentra amazon entonces guarda amazon en store
 //si n oencuentra nada regresa null
-        const detectedStore = detectAlliedStore(url);
-        setStore(detectedStore || null);
+          const detectedStore = detectAlliedStore(url);
+          setStore(detectedStore || null);
 //si encontró tienda aliada busca las promociones relacionadas con esa tienda
 //busca promociones donde el storeid sea "amazon"
-        if (detectedStore) {
-          const storePromotions = getPromotionsForStore(detectedStore.id);
-          setPromotions(storePromotions);
+          if (detectedStore) {
+            const storePromotions = getPromotionsForStore(detectedStore.id);
+            setPromotions(storePromotions);
+          }
         }
       } catch (error) {
         console.error("Error al obtener la pestaña actual:", error);
@@ -53,8 +56,8 @@ function Popup() { //estados del componente, guardan url, guarda tienda detectad
 //cada que el monto cambia, las quincenas o el escenario de atraso se recalcula
 //el plan de pagos
   const paymentPlan = calculatePaymentPlan({
-    amount,
-    installments,
+    amount: Number(amount), // Aseguramos que sea número para el cálculo
+    installments: Number(installments),
     isLatePayment,
   });
 //esta funcion devuelve total, paymentperinstallment, latefee, schedule
